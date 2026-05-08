@@ -1,0 +1,59 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+import { getCollection } from 'astro:content';
+import { formatDate } from '../utils/date';
+
+let alerts: Awaited<ReturnType<typeof getCollection>> = [];
+try {
+  alerts = await getCollection('alerts');
+} catch {
+  alerts = [];
+}
+
+const active = alerts
+  .filter((a) => a.data.status === 'active')
+  .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
+const past = alerts
+  .filter((a) => a.data.status !== 'active')
+  .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
+---
+
+<PageLayout
+  title="Active Alerts"
+  description="Active alerts, advisories, and notices for the Village of Midvale."
+  eyebrow="Alerts"
+  intro="Boil advisories, road closures, hydrant flushing, and other village notices."
+>
+  {active.length === 0 ? (
+    <div class="bg-white border border-stone rounded-card p-6 text-center">
+      <p class="text-h4 m-0 text-success">✓ No active alerts at this time.</p>
+      <p class="text-small text-slate mt-2 m-0">If a village-wide alert is issued, it will appear here and on every page of the site.</p>
+    </div>
+  ) : (
+    <ul class="space-y-4">
+      {active.map((a) => (
+        <li id={a.slug} class={`bg-white border-l-4 ${a.data.severity === 'emergency' ? 'border-accent' : 'border-warning'} border border-stone rounded-card p-6`}>
+          <p class="text-small font-semibold uppercase tracking-wider m-0 text-slate">
+            {a.data.severity ?? 'info'} &middot; Posted {formatDate(a.data.date)}
+          </p>
+          <h2 class="font-serif text-h2 text-ink m-0 mt-1">{a.data.title}</h2>
+          {a.data.summary && <p class="text-body mt-2 m-0">{a.data.summary}</p>}
+        </li>
+      ))}
+    </ul>
+  )}
+
+  {past.length > 0 && (
+    <section class="mt-12">
+      <h2 class="font-serif text-h2 text-ink mb-4">Past alerts</h2>
+      <ul class="divide-y divide-stone bg-white border border-stone rounded-card">
+        {past.slice(0, 20).map((a) => (
+          <li class="px-4 py-3">
+            <p class="text-small text-slate m-0">{formatDate(a.data.date)}</p>
+            <p class="font-semibold m-0">{a.data.title}</p>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )}
+</PageLayout>

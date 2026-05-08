@@ -1,0 +1,40 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import SectionCard from '../../components/SectionCard.astro';
+---
+
+<PageLayout
+  title="Village Government"
+  description="The Mayor, Council, Fiscal Officer, Board of Public Affairs, and Mayor's Court of the Village of Midvale."
+  eyebrow="Government"
+  intro="How the Village of Midvale is governed, who serves, and how to engage."
+>
+  <div class="grid gap-4 md:grid-cols-2">
+    <SectionCard
+      title="Mayor"
+      description="The chief executive officer of the village."
+      href="/government/mayor/"
+    />
+    <SectionCard
+      title="Village Council"
+      description="The six-member legislative body. Meets monthly at Village Hall."
+      href="/government/council/"
+    />
+    <SectionCard
+      title="Fiscal Officer"
+      description="Financial recordkeeping, payroll, and the public records contact."
+      href="/government/fiscal-officer/"
+    />
+    <SectionCard
+      title="Board of Public Affairs"
+      description="Historically responsible for water and sewer; role is in transition."
+      href="/government/board-of-public-affairs/"
+      badge="In transition"
+    />
+    <SectionCard
+      title="Mayor's Court"
+      description="Minor traffic and ordinance violations under Ohio R.C. Chapter 1905."
+      href="/government/mayors-court/"
+    />
+  </div>
+</PageLayout>

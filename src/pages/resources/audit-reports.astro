@@ -1,0 +1,59 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+
+// Spec 6.28: link directly to ohioauditor.gov rather than rehost.
+// These are placeholders — verify and update once each cycle's release URL is confirmed.
+const audits = [
+  { year: 2024, status: 'Released', url: 'https://ohioauditor.gov/auditsearch/Reports.aspx' },
+  { year: 2023, status: 'Released', url: 'https://ohioauditor.gov/auditsearch/Reports.aspx' },
+  { year: 2022, status: 'Released', url: 'https://ohioauditor.gov/auditsearch/Reports.aspx' },
+  { year: 2021, status: 'Released', url: 'https://ohioauditor.gov/auditsearch/Reports.aspx' },
+  { year: 2020, status: 'Released', url: 'https://ohioauditor.gov/auditsearch/Reports.aspx' },
+];
+---
+
+<PageLayout
+  title="Audit Reports"
+  description="Annual financial audit reports for the Village of Midvale, hosted by the Ohio Auditor of State."
+  eyebrow="Resources"
+  intro="Village of Midvale financial audits are conducted and published by the Ohio Auditor of State."
+>
+  <p class="text-body max-w-prose">
+    Reports are hosted by the Ohio Auditor of State. Use the search tool below
+    to view the most recent and historical reports for the Village of Midvale.
+  </p>
+
+  <p class="my-6">
+    <a
+      href="https://ohioauditor.gov/auditsearch/Reports.aspx"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="btn-primary"
+    >
+      Search audits at ohioauditor.gov &rarr;
+    </a>
+  </p>
+
+  <section class="mt-10">
+    <h2 class="font-serif text-h2 text-ink">Recent cycles</h2>
+    <table class="w-full bg-white border border-stone rounded-card overflow-hidden">
+      <thead>
+        <tr class="text-left bg-cream">
+          <th scope="col" class="py-2 px-4 font-semibold">Audit cycle</th>
+          <th scope="col" class="py-2 px-4 font-semibold">Status</th>
+          <th scope="col" class="py-2 px-4 font-semibold">Link</th>
+        </tr>
+      </thead>
+      <tbody>
+        {audits.map((a) => (
+          <tr class="border-t border-stone">
+            <td class="py-3 px-4">{a.year}</td>
+            <td class="py-3 px-4">{a.status}</td>
+            <td class="py-3 px-4"><a href={a.url} target="_blank" rel="noopener noreferrer">View at ohioauditor.gov &rarr;</a></td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+    <p class="text-small text-slate mt-3">Direct links to specific audit cycles will be added once verified.</p>
+  </section>
+</PageLayout>

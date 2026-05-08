@@ -1,0 +1,63 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import ToVerify from '../../components/ToVerify.astro';
+---
+
+<PageLayout
+  title="Water & Sewer"
+  description="Water service in the Village of Midvale is now provided by Aqua Ohio. Storm sewer and drainage are village-managed."
+  eyebrow="Services"
+  intro="Water service is now provided by Aqua Ohio. This page explains who handles what."
+>
+  <div class="bg-warning/10 border-l-4 border-warning rounded p-4 mb-8">
+    <p class="m-0 text-body text-ink">
+      <strong>Heads up:</strong> If you're trying to start, stop, or pay for water
+      service, contact <strong>Aqua Ohio</strong>, not the Village.
+    </p>
+  </div>
+
+  <section class="bg-white border border-stone rounded-card p-6 mb-8 overflow-x-auto">
+    <h2 class="font-serif text-h3 text-primary mt-0">Who to call for what</h2>
+    <table class="w-full text-body">
+      <thead>
+        <tr class="text-left border-b-2 border-stone">
+          <th scope="col" class="py-2 pr-4 font-semibold">Issue</th>
+          <th scope="col" class="py-2 pr-4 font-semibold">Who handles it</th>
+          <th scope="col" class="py-2 font-semibold">Contact</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="border-b border-stone">
+          <td class="py-3 pr-4">Water billing, service start/stop, repairs</td>
+          <td class="py-3 pr-4">Aqua Ohio</td>
+          <td class="py-3"><a href="https://www.aquawater.com/about-us/our-states/ohio" target="_blank" rel="noopener noreferrer">aquawater.com (Ohio)</a></td>
+        </tr>
+        <tr class="border-b border-stone">
+          <td class="py-3 pr-4">Storm sewer, street drainage, catch basins</td>
+          <td class="py-3 pr-4">Village Streets Department</td>
+          <td class="py-3"><a href="/contact/?topic=report">Report an issue</a></td>
+        </tr>
+        <tr>
+          <td class="py-3 pr-4">Sanitary sewer service</td>
+          <td class="py-3 pr-4 italic">Pending verification</td>
+          <td class="py-3"><a href="/contact/">Contact village</a></td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <ToVerify note="The Aqua Ohio customer service phone number for the Midvale service area should be added here once verified." />
+
+  <div class="prose-village max-w-prose">
+    <h2>Why this changed</h2>
+    <p>
+      In August 2024, the Village entered into an Asset Purchase Agreement with
+      Aqua Ohio to transition the village's water utility. The transition closed
+      in Q1 2025.
+    </p>
+    <p>
+      For a complete FAQ about the transition, see
+      <a href="/resources/utility-transition/">Utility Transition</a>.
+    </p>
+  </div>
+</PageLayout>

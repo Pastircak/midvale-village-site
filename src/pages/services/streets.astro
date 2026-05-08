@@ -1,0 +1,54 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import OfficialCard from '../../components/OfficialCard.astro';
+import ToVerify from '../../components/ToVerify.astro';
+import { getEntry } from 'astro:content';
+
+const supt = await getEntry('officials', 'doug-cross');
+---
+
+<PageLayout
+  title="Streets"
+  description="Street maintenance, snow removal, and brush and leaf collection in the Village of Midvale."
+  eyebrow="Services"
+  intro="Street maintenance, winter operations, and seasonal collection."
+>
+  <div class="max-w-2xl mb-10">
+    {supt && (
+      <OfficialCard
+        name={supt.data.name}
+        title={supt.data.title}
+        photo={supt.data.photo}
+        contactEmail={supt.data.contactEmail}
+        verified={supt.data.verified}
+        verifiedDate={supt.data.verifiedDate}
+        notes={supt.data.notes}
+      />
+    )}
+  </div>
+
+  <section class="prose-village max-w-prose">
+    <h2>Snow & ice operations</h2>
+    <ToVerify note="Snow removal priorities and timing pending verification with the Street Superintendent." />
+    <p>
+      During winter weather, village crews focus first on main thoroughfares and
+      hill segments, then on residential side streets. Residents are asked to
+      remove vehicles from the street when possible to allow plows to make a
+      complete pass.
+    </p>
+
+    <h2>Brush & leaf collection</h2>
+    <ToVerify note="Schedule pending verification." />
+    <p>
+      The Street Department collects brush and leaves on a seasonal schedule.
+      Place material at the curb (not in the street) by the published date.
+    </p>
+
+    <h2>Report a street issue</h2>
+    <p>
+      For potholes, streetlight outages, drainage problems, or downed signs,
+      use the <a href="/contact/?topic=report">Report an Issue</a> form. We aim
+      to acknowledge reports within two business days.
+    </p>
+  </section>
+</PageLayout>

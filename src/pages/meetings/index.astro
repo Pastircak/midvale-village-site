@@ -1,0 +1,43 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import SectionCard from '../../components/SectionCard.astro';
+import { getCollection } from 'astro:content';
+import { formatDate } from '../../utils/date';
+
+const all = await getCollection('meetings');
+const now = new Date();
+const next = all
+  .filter((m) => new Date(m.data.date).getTime() >= now.getTime())
+  .sort((a, b) => new Date(a.data.date).getTime() - new Date(b.data.date).getTime())[0];
+---
+
+<PageLayout
+  title="Meetings"
+  description="Village Council meeting schedule, agendas, minutes, and ordinances."
+  eyebrow="Meetings"
+  intro="Schedule, agendas, minutes, and ordinances for the Village of Midvale."
+>
+  {next && (
+    <section class="bg-primary text-cream rounded-card p-6 mb-10">
+      <p class="text-small uppercase tracking-wider text-cream/80 m-0">Next meeting</p>
+      <h2 class="font-serif text-h2 text-cream mt-2 mb-2">
+        {formatDate(next.data.date, { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}
+      </h2>
+      <p class="text-body text-cream/90 m-0">
+        {next.data.body === 'council' ? 'Village Council' : next.data.body} &middot; {next.data.time ?? '7:00 PM'} &middot; {next.data.location}
+      </p>
+      <p class="mt-4 m-0">
+        <a href="/meetings/schedule/" class="inline-flex items-center gap-2 rounded bg-cream text-primary-dark px-4 py-2 font-semibold no-underline">
+          See full schedule &rarr;
+        </a>
+      </p>
+    </section>
+  )}
+
+  <div class="grid gap-4 md:grid-cols-2">
+    <SectionCard title="Schedule" description="Upcoming Council meetings, plus an iCal subscribe link for your phone calendar." href="/meetings/schedule/" />
+    <SectionCard title="Agendas" description="Posted agendas for upcoming and past meetings." href="/meetings/agendas/" />
+    <SectionCard title="Minutes" description="Approved minutes from past Council meetings." href="/meetings/minutes/" />
+    <SectionCard title="Ordinances & Resolutions" description="Ordinances passed by Council." href="/meetings/ordinances/" />
+  </div>
+</PageLayout>

@@ -1,0 +1,48 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import OfficialCard from '../../components/OfficialCard.astro';
+import ToVerify from '../../components/ToVerify.astro';
+import { getEntry } from 'astro:content';
+
+const mayor = await getEntry('officials', 'donna-kohler');
+---
+
+<PageLayout
+  title="Mayor"
+  description="The Office of the Mayor of the Village of Midvale."
+  eyebrow="Government"
+  intro="The Mayor is the chief executive officer of the village."
+>
+  <ToVerify note="Acting Mayor Donna Kohler ascended from Council President when Mayor Doug Cross resigned in late 2024 to take the Street Superintendent role. Term details and contact information pending verification." />
+
+  <div class="max-w-2xl">
+    {mayor && (
+      <OfficialCard
+        name={mayor.data.name}
+        title={mayor.data.title}
+        term={mayor.data.term}
+        photo={mayor.data.photo}
+        contactEmail={mayor.data.contactEmail}
+        verified={mayor.data.verified}
+        verifiedDate={mayor.data.verifiedDate}
+        notes={mayor.data.notes}
+      />
+    )}
+  </div>
+
+  <section class="prose-village mt-10 max-w-prose">
+    <h2>About the Office</h2>
+    <p>
+      The Mayor is the chief executive officer of the Village of Midvale and
+      serves as the chief conservator of the peace within the village. The Mayor
+      presides over Mayor's Court for minor traffic and ordinance violations
+      under Ohio R.C. Chapter 1905, signs ordinances passed by Council, and
+      represents the village in official capacities.
+    </p>
+    <p>
+      Under Ohio R.C., when a mayoral vacancy occurs the Council President
+      serves as Acting Mayor until a regular election can be held to fill the
+      remainder of the unexpired term.
+    </p>
+  </section>
+</PageLayout>

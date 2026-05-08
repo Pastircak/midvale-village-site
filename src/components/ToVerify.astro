@@ -1,0 +1,14 @@
+---
+// Visible inline marker for content that needs Village verification.
+// Pair with `<!-- TO VERIFY: ... -->` HTML comments in source for grep-ability.
+export interface Props {
+  note?: string;
+}
+const { note } = Astro.props;
+---
+<aside class="my-4 px-4 py-3 rounded border-l-4 border-warning bg-warning/10 text-small text-ink">
+  <p class="m-0">
+    <strong class="text-warning">⚠ Pending verification.</strong>
+    {note ?? 'This information has not yet been confirmed with the Village. It is shown here as a placeholder.'}
+  </p>
+</aside>

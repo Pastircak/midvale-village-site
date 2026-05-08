@@ -1,0 +1,33 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import SectionCard from '../../components/SectionCard.astro';
+import { getCollection } from 'astro:content';
+
+const services = (await getCollection('services')).sort((a, b) => a.data.order - b.data.order);
+const slugToHref: Record<string, string> = {
+  'police': '/services/police/',
+  'fire-ems': '/services/fire-ems/',
+  'streets': '/services/streets/',
+  'parks': '/services/parks/',
+  'water-sewer': '/services/water-sewer/',
+  'zoning-permits': '/services/zoning-permits/',
+  'trash-recycling': '/services/trash-recycling/',
+};
+---
+
+<PageLayout
+  title="Village Services"
+  description="Police, Fire & EMS, Streets, Parks, Water & Sewer, Zoning, and Trash & Recycling services in the Village of Midvale."
+  eyebrow="Services"
+  intro="The day-to-day services the village provides &mdash; or contracts on residents' behalf."
+>
+  <div class="grid gap-4 md:grid-cols-2">
+    {services.map((s) => (
+      <SectionCard
+        title={s.data.title}
+        description={s.data.summary}
+        href={slugToHref[s.slug] ?? '/services/'}
+      />
+    ))}
+  </div>
+</PageLayout>

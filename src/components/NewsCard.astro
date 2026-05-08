@@ -1,0 +1,25 @@
+---
+import { formatDateAllCaps } from '../utils/date';
+
+export interface Props {
+  title: string;
+  date: Date | string;
+  excerpt?: string;
+  href: string;
+}
+
+const { title, date, excerpt, href } = Astro.props;
+---
+
+<article class="bg-white border border-stone rounded-card p-6 transition hover:border-primary hover:shadow-soft">
+  <p class="text-small font-semibold text-slate tracking-wider m-0">
+    {formatDateAllCaps(date)}
+  </p>
+  <h3 class="font-serif text-h3 text-ink mt-2 mb-3">
+    <a href={href} class="text-ink no-underline hover:text-primary hover:underline">{title}</a>
+  </h3>
+  {excerpt && <p class="text-body text-ink m-0">{excerpt}</p>}
+  <p class="mt-4 m-0">
+    <a href={href} class="text-primary font-semibold">Read more &rarr;</a>
+  </p>
+</article>

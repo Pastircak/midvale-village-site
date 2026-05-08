@@ -1,0 +1,39 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import DocumentList from '../../components/DocumentList.astro';
+import ToVerify from '../../components/ToVerify.astro';
+import site from '../../data/site.json';
+
+// When forms are added to /public/documents/forms/, list them here.
+const villageForms: Array<{ title: string; href: string; bytes?: number }> = [
+  // Example: { title: 'Building permit application', href: '/documents/forms/building-permit-application.pdf', bytes: 102400 },
+];
+---
+
+<PageLayout
+  title="Forms"
+  description="Village of Midvale forms — permits, zoning, and more."
+  eyebrow="Resources"
+  intro="Most forms below are PDFs. Income tax forms are linked directly to RITA."
+>
+  <ToVerify note="The village's local form library is being compiled. In the meantime, use the contact form to request a specific form by name." />
+
+  <section class="mb-10">
+    <h2 class="font-serif text-h2 text-ink mt-0">Village forms</h2>
+    <DocumentList items={villageForms} emptyMessage="No village forms have been posted yet. Use the contact form to request a specific form." />
+  </section>
+
+  <section>
+    <h2 class="font-serif text-h2 text-ink">Income tax (RITA)</h2>
+    <p class="text-body">
+      The Village of Midvale's income tax is administered by the
+      Regional Income Tax Authority (RITA). Forms, e-filing, and payment are
+      handled directly through RITA's portal:
+    </p>
+    <p>
+      <a href={site.incomeTaxAdministrator.url} target="_blank" rel="noopener noreferrer" class="btn-primary">
+        Visit RITA &rarr;
+      </a>
+    </p>
+  </section>
+</PageLayout>

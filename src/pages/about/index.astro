@@ -1,0 +1,76 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import SectionCard from '../../components/SectionCard.astro';
+import ToVerify from '../../components/ToVerify.astro';
+import site from '../../data/site.json';
+---
+
+<PageLayout
+  title="About the Village"
+  description="A short overview of the Village of Midvale, Tuscarawas County, Ohio."
+  eyebrow="About"
+  intro="A small village in the Tuscarawas River valley with a long history and a tight-knit community."
+>
+  <section class="grid gap-10 md:grid-cols-3">
+    <div class="md:col-span-2 prose-village">
+      <h2>A message from the Mayor</h2>
+      <ToVerify note="The mayor's welcome message will be added once provided by Acting Mayor Donna Kohler." />
+      <p>
+        <em>Welcome message pending.</em>
+      </p>
+
+      <h2>Our village</h2>
+      <p>
+        Midvale was platted in 1888 in the Tuscarawas River valley of eastern Ohio,
+        halfway between the cities of New Philadelphia and Uhrichsville. Today the
+        village covers about {site.areaSquareMiles} square miles and crosses
+        portions of three townships: {site.townships.join(', ')}.
+      </p>
+      <p>
+        Roughly {site.population} residents call Midvale home (per the {site.populationYear} census).
+        Children in the village attend schools in the Indian Valley Local School District —
+        Midvale Elementary is located within the village itself.
+      </p>
+      <p>
+        The village operates its own police department, contracts with the Village
+        of Dennison for fire protection and Smith Ambulance Service for EMS, and
+        has transitioned its water utility to Aqua Ohio under a 2024 Asset Purchase
+        Agreement.
+      </p>
+    </div>
+
+    <aside class="bg-white border border-stone rounded-card p-6 self-start">
+      <h2 class="font-serif text-h3 text-primary mt-0">Quick Facts</h2>
+      <dl class="grid grid-cols-[max-content_1fr] gap-x-4 gap-y-2 text-body">
+        <dt class="text-slate">Founded</dt><dd class="m-0 font-semibold">{site.founded}</dd>
+        <dt class="text-slate">Population</dt><dd class="m-0 font-semibold">~{site.population}</dd>
+        <dt class="text-slate">Area</dt><dd class="m-0 font-semibold">{site.areaSquareMiles} sq mi</dd>
+        <dt class="text-slate">Elevation</dt><dd class="m-0 font-semibold">{site.elevationFeet} ft</dd>
+        <dt class="text-slate">County</dt><dd class="m-0 font-semibold">{site.county}</dd>
+        <dt class="text-slate">Townships</dt><dd class="m-0 font-semibold">{site.townships.join(', ')}</dd>
+        <dt class="text-slate">Schools</dt><dd class="m-0 font-semibold"><a href={site.schoolDistrict.url}>{site.schoolDistrict.name}</a></dd>
+      </dl>
+    </aside>
+  </section>
+
+  <section class="mt-12">
+    <h2 class="font-serif text-h2 text-ink mb-6">Explore</h2>
+    <div class="grid gap-4 md:grid-cols-3">
+      <SectionCard
+        title="History"
+        description="Platting, naming, and how Midvale grew over more than a century."
+        href="/about/history/"
+      />
+      <SectionCard
+        title="Notable Residents"
+        description="Midvale natives who made their mark beyond the village."
+        href="/about/notable-residents/"
+      />
+      <SectionCard
+        title="Community"
+        description="Schools, churches, and the people and places that shape Midvale."
+        href="/about/community/"
+      />
+    </div>
+  </section>
+</PageLayout>

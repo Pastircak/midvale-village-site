@@ -1,0 +1,43 @@
+---
+// Active village alerts (spec 5.2). Pulls from src/content/alerts where status === 'active'.
+import { getCollection } from 'astro:content';
+
+let active: Awaited<ReturnType<typeof getCollection>> = [];
+try {
+  active = await getCollection('alerts', ({ data }) => data.status === 'active');
+} catch (err) {
+  // Collection may be empty during initial build; silently degrade.
+  active = [];
+}
+
+// Sort by severity then date (most recent first)
+const severityOrder: Record<string, number> = { emergency: 0, advisory: 1, info: 2 };
+active.sort((a, b) => {
+  const sa = severityOrder[a.data.severity ?? 'info'] ?? 99;
+  const sb = severityOrder[b.data.severity ?? 'info'] ?? 99;
+  if (sa !== sb) return sa - sb;
+  return new Date(b.data.date).getTime() - new Date(a.data.date).getTime();
+});
+
+const top = active[0];
+const bgClass = top?.data.severity === 'emergency' ? 'bg-accent text-cream' : 'bg-warning text-ink';
+---
+
+{top && (
+  <div class={`${bgClass} no-print`} role="alert" aria-live="polite">
+    <div class="container-content py-3 flex items-start gap-3">
+      <span aria-hidden="true" class="text-h4 leading-none mt-0.5">⚠</span>
+      <div class="flex-1">
+        <p class="m-0 font-semibold">
+          {top.data.title}
+        </p>
+        {top.data.summary && (
+          <p class="m-0 text-small mt-1">{top.data.summary}</p>
+        )}
+        <a href={`/alerts/#${top.slug}`} class={`text-small underline font-semibold ${top.data.severity === 'emergency' ? 'text-cream' : 'text-ink'}`}>
+          Read more &rsaquo;
+        </a>
+      </div>
+    </div>
+  </div>
+)}

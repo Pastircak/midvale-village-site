@@ -1,0 +1,51 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import OfficialCard from '../../components/OfficialCard.astro';
+import { getEntry } from 'astro:content';
+---
+
+<PageLayout
+  title="Fiscal Officer"
+  description="The Fiscal Officer keeps the village's financial records and is the public records contact under Ohio R.C. § 149.43."
+  eyebrow="Government"
+  intro="Financial recordkeeping, payroll, and the village's public records contact."
+>
+  <div class="max-w-2xl">
+    {await (async () => {
+      const fo = await getEntry('officials', 'georgianne-turner');
+      return fo && (
+        <OfficialCard
+          name={fo.data.name}
+          title={fo.data.title}
+          term={fo.data.term}
+          photo={fo.data.photo}
+          contactEmail={fo.data.contactEmail}
+          verified={fo.data.verified}
+          verifiedDate={fo.data.verifiedDate}
+          notes={fo.data.notes}
+        />
+      );
+    })()}
+  </div>
+
+  <section class="prose-village mt-10 max-w-prose">
+    <h2>About the Office</h2>
+    <p>
+      Under Ohio R.C., the Fiscal Officer is responsible for keeping the village's
+      financial records, processing payroll, managing the relationship with the
+      Ohio Auditor of State for the village's annual financial audit, and serving
+      as the designated contact for public records requests.
+    </p>
+
+    <h2>Public records requests</h2>
+    <p>
+      Public records requests under Ohio R.C. § 149.43 should be directed to the
+      Fiscal Officer. Requests may be made in any form &mdash; in person at
+      Village Hall, by mail, or via the <a href="/contact/?topic=records">contact form</a>
+      &mdash; and the village will respond within a reasonable time.
+    </p>
+    <p>
+      For information about audits, see <a href="/resources/audit-reports/">Audit Reports</a>.
+    </p>
+  </section>
+</PageLayout>

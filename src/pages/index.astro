@@ -1,0 +1,210 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
+import QuickActionTile from '../components/QuickActionTile.astro';
+import NewsCard from '../components/NewsCard.astro';
+import { getCollection, type CollectionEntry } from 'astro:content';
+import { formatDate } from '../utils/date';
+import site from '../data/site.json';
+
+// Latest news (3 most recent, non-draft)
+const allNews = (await getCollection('news', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+const latestNews = allNews.slice(0, 3);
+
+// Upcoming meetings (next 2)
+const allMeetings = await getCollection('meetings');
+const now = new Date();
+const upcomingMeetings = allMeetings
+  .filter((m) => new Date(m.data.date).getTime() >= now.getTime())
+  .sort((a, b) => new Date(a.data.date).getTime() - new Date(b.data.date).getTime())
+  .slice(0, 2);
+
+// Quick action tile icons (Lucide-style SVG path data)
+const tiles = [
+  {
+    title: 'Pay Income Tax',
+    description: 'Village income tax is administered by RITA.',
+    href: site.incomeTaxAdministrator.url,
+    external: true,
+    icon: 'M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6',
+  },
+  {
+    title: 'Report an Issue',
+    description: 'Pothole, streetlight out, drainage problem? Tell us.',
+    href: '/contact/?topic=report',
+    icon: 'M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0zM12 9v4M12 17h.01',
+  },
+  {
+    title: 'Council Meetings',
+    description: 'Schedule, agendas, and minutes.',
+    href: '/meetings/schedule/',
+    icon: 'M19 4H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zM16 2v4M8 2v4M3 10h18',
+  },
+  {
+    title: 'Police (non-emergency)',
+    description: site.phones.main,
+    meta: 'Emergencies: 911',
+    href: `tel:+1${site.phones.main.replace(/\D/g, '')}`,
+    icon: 'M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z',
+  },
+  {
+    title: 'Water Service (Aqua Ohio)',
+    description: 'Water billing and service is now handled by Aqua Ohio.',
+    href: 'https://www.aquawater.com/about-us/our-states/ohio',
+    external: true,
+    icon: 'M12 2.5C12 2.5 6 9 6 14a6 6 0 0 0 12 0c0-5-6-11.5-6-11.5z',
+  },
+  {
+    title: 'News & Announcements',
+    description: 'The latest from the village.',
+    href: '/news/',
+    icon: 'M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2M18 14h-8M15 18h-5M10 6h8v4h-8z',
+  },
+];
+---
+
+<BaseLayout
+  title={site.name}
+  description={`Official information for residents of ${site.name}, ${site.county}, ${site.state}. Founded ${site.founded}, population ~${site.population}.`}
+>
+  <Hero
+    headline="Welcome to Midvale"
+    subhead="A small village in the Tuscarawas Valley since 1888."
+    image={{
+      src: '/photos/hero/midvale-historical-1240.jpg',
+      webp: '/photos/hero/midvale-historical-1240.webp',
+      widths: [400, 800, 1240],
+      alt: 'A historical panoramic photograph of the Village of Midvale, Ohio, taken from the surrounding hillside, showing rooftops of homes and dirt streets in the Tuscarawas River valley with hills rising in the distance.',
+      caption: 'Midvale, looking south from the hillside. Date and photographer unknown — please get in touch if you can identify the source.',
+    }}
+    primaryCta={{ label: 'Next Council Meeting', href: '/meetings/schedule/' }}
+    secondaryCta={{ label: 'Contact the Village', href: '/contact/' }}
+  />
+
+  <!-- Welcome paragraph -->
+  <section class="container-content py-12 md:py-16">
+    <div class="max-w-prose">
+      <p class="text-h4 font-sans text-ink m-0">
+        Midvale is a small village in the Tuscarawas River valley of eastern Ohio,
+        halfway between New Philadelphia and Uhrichsville. Platted in 1888, we're
+        home to about 700 residents who care deeply about our community, our schools,
+        and our neighbors. This site is your starting point for everything happening
+        in the village &mdash; meetings, services, news, and the people who keep
+        things running.
+      </p>
+    </div>
+  </section>
+
+  <!-- Quick action tiles -->
+  <section class="container-content pb-12 md:pb-16" aria-labelledby="quick-actions">
+    <h2 id="quick-actions" class="font-serif text-h2 text-ink mb-6">Quick Actions</h2>
+    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {tiles.map((tile) => <QuickActionTile {...tile} />)}
+    </div>
+  </section>
+
+  <!-- Latest news + Upcoming meetings -->
+  <section class="bg-white border-y border-stone">
+    <div class="container-content py-12 md:py-16 grid gap-10 lg:grid-cols-3">
+      <!-- Latest news -->
+      <div class="lg:col-span-2">
+        <div class="flex items-baseline justify-between mb-6">
+          <h2 class="font-serif text-h2 text-ink m-0">Latest News</h2>
+          <a href="/news/" class="text-primary font-semibold">All news &rarr;</a>
+        </div>
+        <div class="grid gap-4 md:grid-cols-2">
+          {latestNews.map((post: CollectionEntry<'news'>) => (
+            <NewsCard
+              title={post.data.title}
+              date={post.data.date}
+              excerpt={post.data.excerpt}
+              href={`/news/${post.slug}/`}
+            />
+          ))}
+        </div>
+      </div>
+
+      <!-- Upcoming meetings -->
+      <aside aria-labelledby="upcoming-meetings">
+        <div class="flex items-baseline justify-between mb-6">
+          <h2 id="upcoming-meetings" class="font-serif text-h2 text-ink m-0">Upcoming Meetings</h2>
+        </div>
+        <ul class="space-y-3">
+          {upcomingMeetings.length === 0 && (
+            <li class="text-slate italic">No meetings scheduled.</li>
+          )}
+          {upcomingMeetings.map((m) => (
+            <li class="bg-cream border border-stone rounded-card p-4">
+              <p class="text-small font-semibold text-slate uppercase tracking-wider m-0">
+                {m.data.body === 'council' ? 'Village Council' : m.data.body}
+              </p>
+              <p class="font-serif text-h4 text-ink m-0 mt-1">
+                {formatDate(m.data.date, { weekday: 'long', month: 'long', day: 'numeric' })}
+              </p>
+              <p class="text-small text-slate m-0 mt-1">
+                {m.data.time ?? '7:00 PM'} &middot; {m.data.location}
+              </p>
+            </li>
+          ))}
+        </ul>
+        <p class="mt-4">
+          <a href="/meetings/schedule/" class="text-primary font-semibold">Full schedule &rarr;</a>
+        </p>
+      </aside>
+    </div>
+  </section>
+
+  <!-- About snippet -->
+  <section class="container-content py-12 md:py-16 grid gap-10 lg:grid-cols-2 items-start">
+    <figure class="m-0">
+      <picture>
+        <source
+          type="image/webp"
+          srcset="/photos/hero/midvale-historical-400.webp 400w, /photos/hero/midvale-historical-800.webp 800w, /photos/hero/midvale-historical-1240.webp 1240w"
+          sizes="(min-width: 1024px) 600px, 100vw"
+        />
+        <img
+          src="/photos/hero/midvale-historical-800.jpg"
+          srcset="/photos/hero/midvale-historical-400.jpg 400w, /photos/hero/midvale-historical-800.jpg 800w, /photos/hero/midvale-historical-1240.jpg 1240w"
+          sizes="(min-width: 1024px) 600px, 100vw"
+          alt="A historical panoramic photograph of the Village of Midvale, Ohio, taken from the surrounding hillside, showing rooftops of homes and dirt streets in the Tuscarawas River valley with hills rising in the distance."
+          loading="lazy"
+          decoding="async"
+          width="800" height="492"
+          class="w-full h-auto rounded-card border border-stone"
+        />
+      </picture>
+      <figcaption class="text-small text-slate italic mt-2">
+        Midvale, looking south from the hillside. Date unknown.
+      </figcaption>
+    </figure>
+
+    <div>
+      <h2 class="font-serif text-h2 text-ink mt-0">About Midvale</h2>
+      <p class="text-body text-ink">
+        Midvale was platted in 1888 and takes its name from its location at the
+        midpoint between New Philadelphia and Uhrichsville. The village covers
+        about three-quarters of a square mile and crosses portions of Goshen, Mill,
+        and Warwick townships. Children attend schools in the Indian Valley Local
+        School District.
+      </p>
+
+      <div class="bg-cream border border-stone rounded-card p-5 mt-4">
+        <h3 class="font-serif text-h3 text-primary mt-0 mb-3">Quick Facts</h3>
+        <dl class="grid grid-cols-[max-content_1fr] gap-x-4 gap-y-2 text-body">
+          <dt class="text-slate">Founded</dt><dd class="m-0 font-semibold">{site.founded}</dd>
+          <dt class="text-slate">Population</dt><dd class="m-0 font-semibold">~{site.population} <span class="text-small text-slate font-normal">({site.populationYear})</span></dd>
+          <dt class="text-slate">Area</dt><dd class="m-0 font-semibold">{site.areaSquareMiles} sq mi</dd>
+          <dt class="text-slate">Elevation</dt><dd class="m-0 font-semibold">{site.elevationFeet} ft</dd>
+          <dt class="text-slate">Townships</dt><dd class="m-0 font-semibold">{site.townships.join(', ')}</dd>
+          <dt class="text-slate">Schools</dt><dd class="m-0 font-semibold">{site.schoolDistrict.name}</dd>
+        </dl>
+      </div>
+
+      <p>
+        <a href="/about/" class="btn-secondary mt-4">More about the village</a>
+      </p>
+    </div>
+  </section>
+</BaseLayout>

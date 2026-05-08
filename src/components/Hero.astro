@@ -1,0 +1,99 @@
+---
+// Homepage hero (spec § 5.4).
+// Renders an absolutely-positioned <picture> behind a dark green overlay so
+// headline text stays accessible (overlay drops contrast under the headline
+// to >=4.5:1 for cream text on the photo).
+
+export interface Props {
+  headline: string;
+  subhead?: string;
+  /** Image to load behind the overlay. If omitted, a solid green gradient is used. */
+  image?: {
+    /** Path to the largest JPEG, e.g. /photos/hero/midvale-historical-1240.jpg */
+    src: string;
+    /** Optional WebP base path (without size). If provided, srcset uses it. */
+    webp?: string;
+    /** Three widths used to build srcset. Defaults to [400, 800, 1240]. */
+    widths?: number[];
+    /** Alt text — required if image is provided. */
+    alt: string;
+    /** Optional caption shown beneath the hero (small, light type) */
+    caption?: string;
+  };
+  primaryCta?: { label: string; href: string };
+  secondaryCta?: { label: string; href: string };
+}
+
+const {
+  headline,
+  subhead,
+  image,
+  primaryCta,
+  secondaryCta,
+} = Astro.props;
+
+// Build srcset entries from the canonical filename pattern.
+// Expects files like /photos/hero/midvale-historical-{400,800,1240}.{jpg,webp}
+function buildSrcset(basePath: string, ext: 'jpg' | 'webp', widths: number[]): string {
+  // basePath: "/photos/hero/midvale-historical-1240.jpg" -> strip width and ext
+  const m = basePath.match(/^(.*?)-(\d+)\.(jpg|jpeg|webp|png)$/i);
+  if (!m) return basePath;
+  const [, prefix] = m;
+  return widths.map((w) => `${prefix}-${w}.${ext} ${w}w`).join(', ');
+}
+
+const widths = image?.widths ?? [400, 800, 1240];
+const srcsetJpg  = image ? buildSrcset(image.src, 'jpg', widths)  : '';
+const srcsetWebp = image ? buildSrcset(image.src, 'webp', widths) : '';
+---
+
+<section class="relative isolate text-cream overflow-hidden" aria-label="Welcome">
+  {image ? (
+    <picture class="absolute inset-0 -z-20 block">
+      <source type="image/webp" srcset={srcsetWebp} sizes="100vw" />
+      <source type="image/jpeg" srcset={srcsetJpg}  sizes="100vw" />
+      <img
+        src={image.src}
+        alt={image.alt}
+        loading="eager"
+        decoding="async"
+        fetchpriority="high"
+        class="w-full h-full object-cover"
+      />
+    </picture>
+  ) : (
+    <div class="absolute inset-0 -z-20 bg-gradient-to-br from-primary to-primary-dark"></div>
+  )}
+
+  {/* Overlay: dark green, slightly stronger near the top where text sits */}
+  <div class="absolute inset-0 -z-10 bg-gradient-to-b from-primary-dark/80 via-primary-dark/60 to-primary-dark/45"></div>
+
+  <div class="container-content py-20 md:py-28 lg:py-36 min-h-[360px] md:min-h-[480px] flex flex-col justify-center">
+    <h1 class="font-serif text-h1 md:text-display text-cream max-w-3xl m-0 drop-shadow-sm">
+      {headline}
+    </h1>
+    {subhead && (
+      <p class="mt-4 text-body md:text-h4 text-cream/95 max-w-2xl drop-shadow-sm">{subhead}</p>
+    )}
+    {(primaryCta || secondaryCta) && (
+      <div class="mt-8 flex flex-wrap gap-3">
+        {primaryCta && (
+          <a href={primaryCta.href} class="inline-flex items-center gap-2 rounded bg-cream text-primary-dark px-5 py-3 font-semibold no-underline transition hover:bg-white">
+            {primaryCta.label} <span aria-hidden="true">→</span>
+          </a>
+        )}
+        {secondaryCta && (
+          <a href={secondaryCta.href} class="inline-flex items-center gap-2 rounded border-2 border-cream text-cream px-5 py-3 font-semibold no-underline transition hover:bg-cream hover:text-primary-dark">
+            {secondaryCta.label}
+          </a>
+        )}
+      </div>
+    )}
+  </div>
+
+  {image?.caption && (
+    <p class="absolute bottom-2 right-3 text-small text-cream/80 italic m-0 drop-shadow-md">
+      {image.caption}
+    </p>
+  )}
+</section>

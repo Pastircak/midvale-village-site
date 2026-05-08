@@ -1,0 +1,44 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import ToVerify from '../../components/ToVerify.astro';
+import site from '../../data/site.json';
+---
+
+<PageLayout
+  title="Mayor's Court"
+  description="The Mayor's Court of the Village of Midvale handles minor traffic and ordinance violations under Ohio R.C. Chapter 1905."
+  eyebrow="Government"
+  intro="Minor traffic and ordinance violations are heard in Mayor's Court."
+>
+  <section class="prose-village max-w-prose">
+    <h2>About the Court</h2>
+    <p>
+      The Mayor's Court of the Village of Midvale operates under the authority
+      of Ohio Revised Code Chapter 1905. The Court has jurisdiction over minor
+      traffic and ordinance violations occurring within the village limits.
+    </p>
+    <p>
+      <strong>Location:</strong> {site.address.street}, {site.address.city}, {site.address.state} {site.address.zip}
+    </p>
+
+    <ToVerify note="Court session schedule, citation payment process, and continuance request process pending verification with the Police Chief and Fiscal Officer." />
+
+    <h2>If you received a citation</h2>
+    <p>
+      The citation you received will indicate a court date. You generally have
+      three options:
+    </p>
+    <ul>
+      <li><strong>Pay the citation</strong> &mdash; instructions on the citation, or contact the village office during business hours.</li>
+      <li><strong>Appear in court</strong> &mdash; arrive at Village Hall on the date and time printed on your citation.</li>
+      <li><strong>Request a continuance</strong> &mdash; contact the village office in advance to request a new court date.</li>
+    </ul>
+
+    <h2>More serious matters</h2>
+    <p>
+      Mayor's Court only handles minor offenses. More serious matters are
+      transferred to the New Philadelphia Municipal Court. Defendants always
+      have the right to have their case transferred to a court of record.
+    </p>
+  </section>
+</PageLayout>

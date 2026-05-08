@@ -1,0 +1,35 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import ToVerify from '../../components/ToVerify.astro';
+---
+
+<PageLayout
+  title="Ordinances & Resolutions"
+  description="Ordinances and resolutions passed by Village of Midvale Council."
+  eyebrow="Meetings"
+  intro="Ordinances and resolutions passed by Council."
+>
+  <ToVerify note="A complete codified ordinance database is being assembled. If the village uses American Legal Publishing or Walter H. Drane for codification, that link will be added here." />
+
+  <div class="prose-village max-w-prose">
+    <h2>Recent ordinances</h2>
+    <p>
+      A list of recent ordinances will appear here as PDFs are added to the
+      site.
+    </p>
+
+    <h2>Codified ordinances</h2>
+    <p>
+      Many Ohio municipalities maintain a codified ordinance database hosted by
+      a third-party publisher (commonly American Legal Publishing or
+      Walter H. Drane). Once we confirm the village's arrangement, a direct
+      link will be posted here.
+    </p>
+
+    <h2>Need a specific ordinance?</h2>
+    <p>
+      <a href="/contact/?topic=records">Submit a public records request</a> and
+      include the ordinance number or subject if known.
+    </p>
+  </div>
+</PageLayout>

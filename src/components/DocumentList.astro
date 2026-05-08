@@ -1,0 +1,56 @@
+---
+import { formatDateShort } from '../utils/date';
+import { formatBytes } from '../utils/format';
+
+export interface DocItem {
+  title: string;
+  href: string;
+  date?: Date | string;
+  bytes?: number;
+}
+export interface Props {
+  items: DocItem[];
+  emptyMessage?: string;
+}
+
+const { items, emptyMessage = 'No documents available yet.' } = Astro.props;
+---
+
+{items.length === 0 ? (
+  <p class="text-slate italic">{emptyMessage}</p>
+) : (
+  <ul class="divide-y divide-stone bg-white border border-stone rounded-card overflow-hidden">
+    {items.map((doc) => (
+      <li>
+        <a
+          href={doc.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="flex items-start gap-4 px-4 py-3 no-underline hover:bg-cream group"
+        >
+          <span class="inline-flex items-center justify-center w-10 h-10 rounded bg-cream text-primary flex-shrink-0" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+              <polyline points="14 2 14 8 20 8" />
+            </svg>
+          </span>
+          <span class="flex-1 min-w-0">
+            <span class="block font-semibold text-ink group-hover:text-primary">{doc.title}</span>
+            <span class="block text-small text-slate">
+              {doc.date && <>{formatDateShort(doc.date)}</>}
+              {doc.date && doc.bytes && <span aria-hidden="true"> &middot; </span>}
+              {doc.bytes && <>PDF, {formatBytes(doc.bytes)}</>}
+            </span>
+          </span>
+          <span class="text-primary flex-shrink-0 mt-2" aria-label="Download (opens in new tab)">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+              <polyline points="7 10 12 15 17 10" />
+              <line x1="12" y1="15" x2="12" y2="3" />
+            </svg>
+          </span>
+        </a>
+      </li>
+    ))}
+  </ul>
+)}

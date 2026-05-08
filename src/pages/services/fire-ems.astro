@@ -1,0 +1,44 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import EmergencyCallout from '../../components/EmergencyCallout.astro';
+import ToVerify from '../../components/ToVerify.astro';
+import site from '../../data/site.json';
+---
+
+<PageLayout
+  title="Fire & EMS"
+  description="Fire and emergency medical services in the Village of Midvale."
+  eyebrow="Services"
+  intro="Fire protection is contracted; EMS is provided by Smith Ambulance Service."
+>
+  <EmergencyCallout />
+
+  <ToVerify note="The exact arrangement between the Dennison contract and the Midvale-Barnhill-Brightwood Volunteer Fire Department needs to be clarified with Chief Anderson before publishing as official." />
+
+  <section class="prose-village max-w-prose">
+    <h2>How it works</h2>
+    <p>
+      Fire protection and emergency medical services in the Village of Midvale
+      are provided through contracted relationships and a local volunteer fire
+      department:
+    </p>
+    <ul>
+      <li>
+        <strong>Fire suppression:</strong> Per the Village's most recent audit,
+        fire protection services are contracted through the Village of Dennison
+        Fire Department. The Midvale-Barnhill-Brightwood Volunteer Fire
+        Department is also housed at Village Hall and supports the village.
+      </li>
+      <li>
+        <strong>EMS:</strong> Emergency medical services are contracted to
+        <strong>Smith Ambulance Service</strong>.
+      </li>
+    </ul>
+
+    <h2>Contacts</h2>
+    <p>
+      For non-emergency questions about fire or EMS service, contact the village
+      office at <a href={`tel:+1${site.phones.main.replace(/\D/g, '')}`}>{site.phones.main}</a>.
+    </p>
+  </section>
+</PageLayout>

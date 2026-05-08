@@ -1,0 +1,63 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import OfficialCard from '../../components/OfficialCard.astro';
+import ToVerify from '../../components/ToVerify.astro';
+import { getCollection } from 'astro:content';
+import site from '../../data/site.json';
+
+const all = await getCollection('officials', ({ data }) => data.role === 'council' || data.role === 'mayor');
+const council = all
+  .filter((o) => o.data.role === 'council' || o.data.name === 'Donna Kohler')
+  .sort((a, b) => a.data.order - b.data.order);
+---
+
+<PageLayout
+  title="Village Council"
+  description="The six-member legislative body of the Village of Midvale. Meets monthly at Village Hall."
+  eyebrow="Government"
+  intro="The legislative body of the village, responsible for ordinances, the budget, and policy direction."
+>
+  <ToVerify note="Three of six council members have been confirmed via public records. The remaining seats are pending verification, and one seat is currently vacant pending Council appointment." />
+
+  <section class="grid gap-4 md:grid-cols-2">
+    {council.map((m) => (
+      <OfficialCard
+        name={m.data.name}
+        title={m.data.title}
+        term={m.data.term}
+        photo={m.data.photo}
+        contactEmail={m.data.contactEmail}
+        verified={m.data.verified}
+        verifiedDate={m.data.verifiedDate}
+        notes={m.data.notes}
+      />
+    ))}
+  </section>
+
+  <section class="mt-10 grid gap-6 md:grid-cols-2">
+    <div class="bg-white border border-stone rounded-card p-6">
+      <h2 class="font-serif text-h3 text-primary mt-0">When Council meets</h2>
+      <p class="text-body text-ink m-0">
+        Regular meetings: <strong>second Wednesday of each month, 7:00 PM</strong>.
+      </p>
+      <p class="text-body text-ink mt-2 m-0">
+        Location: <strong>Village Hall, {site.address.street}</strong>.
+      </p>
+      <p class="text-small text-warning font-semibold mt-2 m-0">
+        Cadence pending verification with the Fiscal Officer.
+      </p>
+      <p class="mt-4 m-0">
+        <a href="/meetings/schedule/" class="text-primary font-semibold">Full meeting schedule &rarr;</a>
+      </p>
+    </div>
+
+    <div class="bg-white border border-stone rounded-card p-6">
+      <h2 class="font-serif text-h3 text-primary mt-0">How to address Council</h2>
+      <ul class="space-y-2 text-body text-ink m-0">
+        <li><strong>In person:</strong> Attend a regular meeting and request to speak during the public comment portion.</li>
+        <li><strong>By mail:</strong> Village Council, {site.mailing.po}, {site.mailing.city}, {site.mailing.state} {site.mailing.zip}.</li>
+        <li><strong>By email:</strong> Use the <a href="/contact/">contact form</a> &mdash; messages will be routed to Council members.</li>
+      </ul>
+    </div>
+  </section>
+</PageLayout>

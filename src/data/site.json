@@ -1,0 +1,59 @@
+{
+  "name": "Village of Midvale",
+  "shortName": "Midvale",
+  "county": "Tuscarawas County",
+  "state": "Ohio",
+  "founded": 1888,
+  "population": 673,
+  "populationYear": 2020,
+  "areaSquareMiles": 0.74,
+  "elevationFeet": 873,
+  "townships": ["Goshen", "Mill", "Warwick"],
+  "isOfficial": false,
+  "maintainer": {
+    "name": "Ryan Pastircak",
+    "blurb": "Built and maintained by Ryan Pastircak as a community contribution. Not affiliated with the Village of Midvale government."
+  },
+  "address": {
+    "street": "3111 Barnhill Road",
+    "city": "Midvale",
+    "state": "OH",
+    "zip": "44653"
+  },
+  "mailing": {
+    "po": "PO Box 227",
+    "city": "Midvale",
+    "state": "OH",
+    "zip": "44653"
+  },
+  "coordinates": {
+    "lat": 40.4358,
+    "lng": -81.3701
+  },
+  "phones": {
+    "main": "(330) 339-1939",
+    "policeFax": "(330) 339-8986",
+    "emergency": "911"
+  },
+  "hours": {
+    "general": "Hours pending verification with Fiscal Officer",
+    "policeNonEmergency": "Hours pending verification"
+  },
+  "social": {
+    "facebook": "https://www.facebook.com/profile.php?id=107749202588577"
+  },
+  "schoolDistrict": {
+    "name": "Indian Valley Local School District",
+    "url": "https://www.ivschools.org/"
+  },
+  "contactEmail": "PLACEHOLDER_TO_BE_PROVIDED",
+  "incomeTaxRate": 0.015,
+  "incomeTaxAdministrator": {
+    "name": "RITA — Regional Income Tax Authority",
+    "url": "https://www.ritaohio.com/"
+  },
+  "domain": {
+    "primary": "midvaleohio.org",
+    "future": "midvaleoh.gov"
+  }
+}

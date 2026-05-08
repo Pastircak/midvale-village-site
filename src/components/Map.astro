@@ -1,0 +1,44 @@
+---
+// OpenStreetMap embed (no Google, per spec 6.31). Uses iframe to a static OSM viewer.
+import site from '../data/site.json';
+
+export interface Props {
+  lat?: number;
+  lng?: number;
+  zoom?: number;
+  caption?: string;
+  height?: string;
+}
+
+const {
+  lat = site.coordinates.lat,
+  lng = site.coordinates.lng,
+  zoom = 15,
+  caption = `${site.address.street}, ${site.address.city}, ${site.address.state} ${site.address.zip}`,
+  height = '320px',
+} = Astro.props;
+
+// Compute a small bbox around the point for the OSM embed
+const delta = 0.005 / Math.pow(2, zoom - 15);
+const bbox = `${lng - delta},${lat - delta},${lng + delta},${lat + delta}`;
+const marker = `${lat},${lng}`;
+const src = `https://www.openstreetmap.org/export/embed.html?bbox=${bbox}&layer=mapnik&marker=${marker}`;
+const link = `https://www.openstreetmap.org/?mlat=${lat}&mlon=${lng}#map=${zoom}/${lat}/${lng}`;
+---
+
+<figure class="m-0">
+  <div class="w-full rounded-card overflow-hidden border border-stone" style={`height: ${height}`}>
+    <iframe
+      src={src}
+      title={`Map of ${caption}`}
+      width="100%"
+      height="100%"
+      loading="lazy"
+      referrerpolicy="no-referrer"
+      style="border: 0; display: block;"
+    ></iframe>
+  </div>
+  <figcaption class="text-small text-slate mt-2">
+    {caption} &middot; <a href={link} target="_blank" rel="noopener noreferrer">Larger map</a>
+  </figcaption>
+</figure>

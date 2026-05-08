@@ -1,0 +1,32 @@
+{
+  "primary": [
+    { "label": "Government", "href": "/government/" },
+    { "label": "Services", "href": "/services/" },
+    { "label": "Meetings", "href": "/meetings/" },
+    { "label": "News & Events", "href": "/news/" },
+    { "label": "Resources", "href": "/resources/" },
+    { "label": "Contact", "href": "/contact/" }
+  ],
+  "footer": {
+    "village": [
+      { "label": "About", "href": "/about/" },
+      { "label": "History", "href": "/about/history/" },
+      { "label": "Notable Residents", "href": "/about/notable-residents/" },
+      { "label": "Community", "href": "/about/community/" }
+    ],
+    "quickLinks": [
+      { "label": "Council", "href": "/government/council/" },
+      { "label": "Meetings", "href": "/meetings/" },
+      { "label": "Pay Income Tax (RITA)", "href": "https://www.ritaohio.com/", "external": true },
+      { "label": "Report an Issue", "href": "/contact/?topic=report" },
+      { "label": "Active Alerts", "href": "/alerts/" },
+      { "label": "Contact", "href": "/contact/" }
+    ],
+    "legal": [
+      { "label": "Accessibility", "href": "/accessibility/" },
+      { "label": "Privacy", "href": "/privacy/" },
+      { "label": "Credits", "href": "/credits/" },
+      { "label": "Unofficial Demo Disclosure", "href": "/unofficial-disclosure/" }
+    ]
+  }
+}

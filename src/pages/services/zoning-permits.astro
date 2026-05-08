@@ -1,0 +1,35 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import ToVerify from '../../components/ToVerify.astro';
+---
+
+<PageLayout
+  title="Zoning & Permits"
+  description="Building permits, zoning questions, and variance requests in the Village of Midvale."
+  eyebrow="Services"
+  intro="Building permits, zoning questions, and variance requests."
+>
+  <ToVerify note="The village's permit process, fee schedule, and zoning department contact are being compiled." />
+
+  <div class="prose-village max-w-prose">
+    <h2>How to request a permit</h2>
+    <p>
+      The Village of Midvale issues permits for construction, alterations,
+      demolitions, and certain accessory structures. Until the form library is
+      live, please <a href="/contact/">contact the village office</a> to request
+      the appropriate forms and fee schedule.
+    </p>
+
+    <h2>Zoning questions</h2>
+    <p>
+      For questions about permitted uses, setbacks, lot coverage, or variance
+      requests, contact the village office.
+    </p>
+
+    <h2>Forms</h2>
+    <p>
+      Permit and zoning forms will appear in
+      <a href="/resources/forms/">Resources &rarr; Forms</a>.
+    </p>
+  </div>
+</PageLayout>

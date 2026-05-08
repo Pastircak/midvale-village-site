@@ -1,0 +1,35 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import SectionCard from '../../components/SectionCard.astro';
+---
+
+<PageLayout
+  title="Resources"
+  description="Forms, audit reports, the utility transition FAQ, and useful external links."
+  eyebrow="Resources"
+  intro="Practical resources for residents."
+>
+  <div class="grid gap-4 md:grid-cols-2">
+    <SectionCard
+      title="Forms"
+      description="Permit, zoning, and other village forms."
+      href="/resources/forms/"
+    />
+    <SectionCard
+      title="Audit Reports"
+      description="Annual financial audits, hosted directly at the Ohio Auditor of State."
+      href="/resources/audit-reports/"
+    />
+    <SectionCard
+      title="Utility Transition"
+      description="Everything residents need to know about the Aqua Ohio water transition."
+      href="/resources/utility-transition/"
+      badge="Updated"
+    />
+    <SectionCard
+      title="Useful Links"
+      description="County, state, and external resources for residents."
+      href="/resources/links/"
+    />
+  </div>
+</PageLayout>

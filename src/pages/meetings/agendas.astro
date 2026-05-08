@@ -1,0 +1,28 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import DocumentList from '../../components/DocumentList.astro';
+import { getCollection } from 'astro:content';
+
+const all = await getCollection('meetings');
+const items = all
+  .filter((m) => !!m.data.agendaUrl)
+  .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime())
+  .map((m) => ({
+    title: `${m.data.body === 'council' ? 'Council' : m.data.body} agenda — ${new Date(m.data.date).toLocaleDateString('en-US', { dateStyle: 'medium' })}`,
+    href: m.data.agendaUrl!,
+    date: m.data.date,
+  }));
+---
+
+<PageLayout
+  title="Agendas"
+  description="Council meeting agendas, posted in advance of each meeting."
+  eyebrow="Meetings"
+  intro="Agendas for upcoming and recent Council meetings."
+>
+  <DocumentList items={items} emptyMessage="No agendas have been posted to this site yet. Agendas will appear here as they are released." />
+
+  <p class="text-small text-slate mt-6">
+    Need an older agenda? <a href="/contact/?topic=records">Submit a public records request</a>.
+  </p>
+</PageLayout>

@@ -1,0 +1,137 @@
+---
+// Contact form (spec 5.9). Posts to /functions/contact.ts, which validates Turnstile + sends via MailChannels.
+// To enable Turnstile, set CF_TURNSTILE_SITE_KEY in Cloudflare Pages env vars; the script reads from data attribute below.
+const turnstileSiteKey = (import.meta.env.PUBLIC_TURNSTILE_SITE_KEY as string | undefined) ?? '';
+---
+
+<div
+  class="bg-white border border-stone rounded-card p-6"
+  data-contact-form-root
+  data-turnstile-key={turnstileSiteKey}
+>
+  <div role="alert" aria-live="polite" data-form-status class="hidden mb-4 px-4 py-3 rounded text-body"></div>
+
+  <form
+    method="POST"
+    action="/contact"
+    novalidate
+    data-contact-form
+    class="grid gap-5"
+  >
+    <div>
+      <label for="cf-name" class="block font-semibold text-ink mb-1">Full name <span class="text-accent">*</span></label>
+      <input id="cf-name" name="name" type="text" required autocomplete="name" maxlength="120"
+        class="w-full px-3 py-2 rounded border border-stone focus:border-primary focus:outline-none" />
+    </div>
+
+    <div class="grid sm:grid-cols-2 gap-5">
+      <div>
+        <label for="cf-email" class="block font-semibold text-ink mb-1">Email <span class="text-accent">*</span></label>
+        <input id="cf-email" name="email" type="email" required autocomplete="email" maxlength="200"
+          class="w-full px-3 py-2 rounded border border-stone focus:border-primary focus:outline-none" />
+      </div>
+      <div>
+        <label for="cf-phone" class="block font-semibold text-ink mb-1">Phone <span class="text-slate font-normal text-small">(optional)</span></label>
+        <input id="cf-phone" name="phone" type="tel" autocomplete="tel" maxlength="40"
+          class="w-full px-3 py-2 rounded border border-stone focus:border-primary focus:outline-none" />
+      </div>
+    </div>
+
+    <div>
+      <label for="cf-topic" class="block font-semibold text-ink mb-1">Topic</label>
+      <select id="cf-topic" name="topic"
+        class="w-full px-3 py-2 rounded border border-stone bg-white focus:border-primary focus:outline-none">
+        <option value="general">General inquiry</option>
+        <option value="report">Report an issue</option>
+        <option value="records">Public records request</option>
+        <option value="other">Other</option>
+      </select>
+    </div>
+
+    <div>
+      <label for="cf-message" class="block font-semibold text-ink mb-1">
+        Message <span class="text-accent">*</span>
+        <span class="float-right text-small text-slate font-normal" data-char-count>0 / 2000</span>
+      </label>
+      <textarea id="cf-message" name="message" required maxlength="2000" rows="6"
+        class="w-full px-3 py-2 rounded border border-stone focus:border-primary focus:outline-none"></textarea>
+    </div>
+
+    <!-- Honeypot — bots fill it, humans don't see it -->
+    <div aria-hidden="true" style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;">
+      <label for="cf-company">Leave this field empty</label>
+      <input id="cf-company" name="company" type="text" tabindex="-1" autocomplete="off" />
+    </div>
+
+    <!-- Turnstile mount point — script will inject if site key is configured -->
+    <div data-turnstile-mount class="min-h-[70px]"></div>
+
+    <button type="submit" class="btn-primary w-full sm:w-auto">
+      Send message
+    </button>
+  </form>
+</div>
+
+<script>
+  // Character counter
+  const ta = document.querySelector<HTMLTextAreaElement>('#cf-message');
+  const counter = document.querySelector<HTMLElement>('[data-char-count]');
+  if (ta && counter) {
+    const update = () => { counter.textContent = `${ta.value.length} / ${ta.maxLength}`; };
+    ta.addEventListener('input', update);
+    update();
+  }
+
+  // Optional Turnstile load (only if a site key is configured)
+  const root = document.querySelector<HTMLElement>('[data-contact-form-root]');
+  const turnstileKey = root?.dataset.turnstileKey;
+  const mount = document.querySelector<HTMLElement>('[data-turnstile-mount]');
+  if (turnstileKey && mount) {
+    const s = document.createElement('script');
+    s.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js';
+    s.async = true;
+    s.defer = true;
+    document.head.appendChild(s);
+    const widget = document.createElement('div');
+    widget.className = 'cf-turnstile';
+    widget.setAttribute('data-sitekey', turnstileKey);
+    widget.setAttribute('data-theme', 'light');
+    mount.appendChild(widget);
+  }
+
+  // AJAX submit so we can show inline status without leaving the page
+  const form = document.querySelector<HTMLFormElement>('[data-contact-form]');
+  const status = document.querySelector<HTMLElement>('[data-form-status]');
+  if (form && status) {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const data = new FormData(form);
+      // Capture Turnstile token if present
+      const ts = (form.querySelector<HTMLInputElement>('input[name="cf-turnstile-response"]')?.value) ?? '';
+      if (ts) data.set('cf-turnstile-response', ts);
+
+      status.className = 'mb-4 px-4 py-3 rounded text-body bg-cream text-ink';
+      status.textContent = 'Sending…';
+
+      try {
+        const res = await fetch('/contact', {
+          method: 'POST',
+          body: new URLSearchParams(data as any),
+          headers: { 'Accept': 'application/json' },
+        });
+        const json = await res.json().catch(() => ({}));
+        if (res.ok && json.ok) {
+          status.className = 'mb-4 px-4 py-3 rounded text-body bg-success/10 text-success border border-success/40';
+          status.textContent = 'Thanks — your message was sent. We aim to respond within two business days.';
+          form.reset();
+        } else {
+          status.className = 'mb-4 px-4 py-3 rounded text-body bg-accent/10 text-accent border border-accent/40';
+          status.textContent = json.error ?? 'Something went wrong. Please try again, or call the village office.';
+        }
+      } catch (err) {
+        status.className = 'mb-4 px-4 py-3 rounded text-body bg-accent/10 text-accent border border-accent/40';
+        status.textContent = 'Network error. Please try again, or call the village office.';
+      }
+    });
+  }
+</script>

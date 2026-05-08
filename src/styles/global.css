@@ -1,0 +1,253 @@
+@import "tailwindcss";
+
+/* ---------------------------------------------------------------- */
+/* Theme tokens (Tailwind v4: configured via CSS, not config file)  */
+/* ---------------------------------------------------------------- */
+
+@theme {
+  /* Brand colors per spec § 3.1 */
+  --color-primary: #1F4D3A;          /* Tuscarawas Green */
+  --color-primary-dark: #143025;     /* Deep Forest */
+  --color-primary-light: #5C8270;    /* Sage */
+  --color-cream: #FAF7F0;            /* Heritage Cream (page bg) */
+  --color-ink: #1A1F2E;              /* Slate Ink (body text) */
+  --color-slate: #4A5163;            /* Slate Gray (secondary text) */
+  --color-accent: #9B2C2C;           /* Barn Red */
+  --color-accent-muted: #C2856A;     /* Aged Brick */
+  --color-success: #2F7A4D;          /* Field Green */
+  --color-warning: #B8860B;          /* Harvest Gold */
+  --color-stone: #D4CFC0;            /* Soft Stone (borders) */
+
+  /* Fonts per spec § 3.2 */
+  --font-serif: "Source Serif 4", Georgia, Cambria, "Times New Roman", serif;
+  --font-sans: "Source Sans 3", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* Type scale per spec § 3.2 */
+  --text-display: 48px;
+  --text-display--line-height: 56px;
+  --text-h1: 36px;
+  --text-h1--line-height: 44px;
+  --text-h2: 28px;
+  --text-h2--line-height: 36px;
+  --text-h3: 22px;
+  --text-h3--line-height: 30px;
+  --text-h4: 18px;
+  --text-h4--line-height: 26px;
+  --text-body: 17px;
+  --text-body--line-height: 28px;
+  --text-small: 14px;
+  --text-small--line-height: 22px;
+
+  /* Layout per spec § 3.3 */
+  --container-content: 1200px;
+  --container-prose: 1024px;
+
+  /* Radius */
+  --radius: 6px;
+  --radius-card: 12px;
+
+  /* Subtle, government-appropriate shadows */
+  --shadow-soft: 0 1px 2px rgba(20, 48, 37, 0.04), 0 1px 1px rgba(20, 48, 37, 0.06);
+  --shadow-lift: 0 4px 12px rgba(20, 48, 37, 0.08), 0 2px 4px rgba(20, 48, 37, 0.06);
+}
+
+/* ---------------------------------------------------------------- */
+/* Self-hosted fonts                                                 */
+/* Drop subsetted woff2 files into /public/fonts/ — see README.      */
+/* The site degrades gracefully to Georgia / system-ui until then.   */
+/* ---------------------------------------------------------------- */
+
+@font-face {
+  font-family: 'Source Serif 4';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('/fonts/source-serif-4-600.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Source Serif 4';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('/fonts/source-serif-4-700.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Source Sans 3';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/source-sans-3-400.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Source Sans 3';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('/fonts/source-sans-3-600.woff2') format('woff2');
+}
+
+/* ---------------------------------------------------------------- */
+/* Base                                                              */
+/* ---------------------------------------------------------------- */
+
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    background-color: var(--color-cream);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: 17px;
+    line-height: 28px;
+    font-feature-settings: 'kern' 1, 'liga' 1;
+  }
+
+  h1, h2, h3 {
+    font-family: var(--font-serif);
+    color: var(--color-ink);
+  }
+  h4, h5, h6 {
+    font-family: var(--font-sans);
+    color: var(--color-ink);
+  }
+
+  a {
+    color: var(--color-primary);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    text-decoration-thickness: 1px;
+  }
+  a:hover {
+    color: var(--color-primary-dark);
+    text-decoration-thickness: 2px;
+  }
+
+  /* Visible focus ring on every focusable element — spec § 10.2 */
+  :focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+  :focus:not(:focus-visible) {
+    outline: none;
+  }
+
+  ::selection {
+    background-color: var(--color-primary);
+    color: var(--color-cream);
+  }
+}
+
+/* ---------------------------------------------------------------- */
+/* Component utilities                                               */
+/* ---------------------------------------------------------------- */
+
+@utility btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: var(--radius);
+  background-color: var(--color-primary);
+  color: var(--color-cream);
+  padding: 0.75rem 1.25rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background-color 0.15s;
+  &:hover { background-color: var(--color-primary-dark); }
+}
+
+@utility btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: var(--radius);
+  background-color: transparent;
+  color: var(--color-primary);
+  border: 2px solid var(--color-primary);
+  padding: calc(0.75rem - 2px) calc(1.25rem - 2px);
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.15s;
+  &:hover {
+    background-color: var(--color-primary);
+    color: var(--color-cream);
+  }
+}
+
+@utility container-content {
+  margin-inline: auto;
+  width: 100%;
+  max-width: var(--container-content);
+  padding-inline: 1rem;
+  @media (min-width: 640px) { padding-inline: 1.5rem; }
+  @media (min-width: 1024px) { padding-inline: 2rem; }
+}
+
+@utility container-prose {
+  margin-inline: auto;
+  width: 100%;
+  max-width: var(--container-prose);
+  padding-inline: 1rem;
+  @media (min-width: 640px) { padding-inline: 1.5rem; }
+  @media (min-width: 1024px) { padding-inline: 2rem; }
+}
+
+/* Prose styling for Markdown content within `.prose-village` */
+.prose-village { color: var(--color-ink); }
+.prose-village h1 { font-family: var(--font-serif); font-size: 36px; line-height: 44px; font-weight: 700; margin-top: 0; margin-bottom: 1.5rem; }
+.prose-village h2 { font-family: var(--font-serif); font-size: 28px; line-height: 36px; font-weight: 600; margin-top: 2.5rem; margin-bottom: 1rem; }
+.prose-village h3 { font-family: var(--font-serif); font-size: 22px; line-height: 30px; font-weight: 600; margin-top: 2rem; margin-bottom: 0.75rem; }
+.prose-village h4 { font-family: var(--font-sans); font-size: 18px; line-height: 26px; font-weight: 600; margin-top: 1.5rem; margin-bottom: 0.5rem; }
+.prose-village p  { font-size: 17px; line-height: 28px; margin-bottom: 1rem; }
+.prose-village ul, .prose-village ol { padding-left: 1.5rem; margin-bottom: 1rem; }
+.prose-village li { font-size: 17px; line-height: 28px; margin-bottom: 0.25rem; }
+.prose-village ul li { list-style: disc; }
+.prose-village ol li { list-style: decimal; }
+.prose-village a { color: var(--color-primary); text-decoration: underline; }
+.prose-village blockquote {
+  border-left: 4px solid var(--color-primary-light);
+  background: #fff;
+  padding: 0.5rem 0.75rem 0.5rem 1rem;
+  margin-block: 1rem;
+  font-style: italic;
+  color: var(--color-slate);
+}
+.prose-village code {
+  font-family: var(--font-mono);
+  background: var(--color-cream);
+  padding: 0.125rem 0.375rem;
+  border-radius: 4px;
+  font-size: 0.92em;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Print */
+@media print {
+  .no-print { display: none !important; }
+  body { background: #fff; color: #000; }
+  a { text-decoration: underline; }
+  a[href]::after {
+    content: ' (' attr(href) ')';
+    font-size: 0.85em;
+    color: #555;
+  }
+}

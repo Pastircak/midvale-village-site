@@ -1,0 +1,97 @@
+---
+import nav from '../data/nav.json';
+import site from '../data/site.json';
+
+const currentPath = Astro.url.pathname;
+function isActive(href: string): boolean {
+  if (href === '/') return currentPath === '/';
+  return currentPath.startsWith(href);
+}
+---
+
+<header class="bg-white border-b border-stone sticky top-0 z-40 shadow-soft">
+  <div class="container-content">
+    <div class="flex items-center justify-between gap-4 py-3 md:py-4">
+      <!-- Logo + wordmark -->
+      <a href="/" class="flex items-center gap-3 no-underline group" aria-label={`${site.name} home`}>
+        <!-- Logo placeholder slot — drop /public/brand/seal.svg to replace -->
+        <span class="inline-flex items-center justify-center w-12 h-12 md:w-14 md:h-14 rounded-full bg-primary text-cream font-serif text-h3 flex-shrink-0" aria-hidden="true">
+          M
+        </span>
+        <span class="leading-tight">
+          <span class="block font-serif font-bold text-h4 md:text-h3 text-primary">{site.name}</span>
+          <span class="block font-sans text-small text-slate">{site.county}, {site.state} &middot; Est. {site.founded}</span>
+        </span>
+      </a>
+
+      <!-- Desktop nav -->
+      <nav class="hidden lg:block" aria-label="Primary">
+        <ul class="flex items-center gap-1">
+          {nav.primary.map((item) => (
+            <li>
+              <a
+                href={item.href}
+                class={`inline-block px-3 py-2 rounded font-semibold text-body no-underline transition ${
+                  isActive(item.href)
+                    ? 'text-primary bg-cream'
+                    : 'text-ink hover:text-primary hover:bg-cream'
+                }`}
+                aria-current={isActive(item.href) ? 'page' : undefined}
+              >
+                {item.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+
+      <!-- Mobile menu toggle -->
+      <button
+        type="button"
+        class="lg:hidden inline-flex items-center justify-center w-11 h-11 rounded border border-stone text-ink"
+        aria-label="Open menu"
+        aria-expanded="false"
+        aria-controls="mobile-nav"
+        data-menu-toggle
+      >
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <line x1="4" y1="6" x2="20" y2="6" />
+          <line x1="4" y1="12" x2="20" y2="12" />
+          <line x1="4" y1="18" x2="20" y2="18" />
+        </svg>
+      </button>
+    </div>
+
+    <!-- Mobile nav -->
+    <nav id="mobile-nav" class="lg:hidden hidden pb-4" aria-label="Primary mobile">
+      <ul class="flex flex-col gap-1">
+        {nav.primary.map((item) => (
+          <li>
+            <a
+              href={item.href}
+              class={`block px-3 py-3 rounded font-semibold text-body no-underline ${
+                isActive(item.href) ? 'text-primary bg-cream' : 'text-ink hover:bg-cream'
+              }`}
+              aria-current={isActive(item.href) ? 'page' : undefined}
+            >
+              {item.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<script>
+  // Tiny inline mobile menu toggle — no framework needed
+  const btn = document.querySelector<HTMLButtonElement>('[data-menu-toggle]');
+  const menu = document.getElementById('mobile-nav');
+  if (btn && menu) {
+    btn.addEventListener('click', () => {
+      const open = menu.classList.toggle('hidden') === false;
+      btn.setAttribute('aria-expanded', String(open));
+      btn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    });
+  }
+</script>

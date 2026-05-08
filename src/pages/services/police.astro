@@ -1,0 +1,67 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import EmergencyCallout from '../../components/EmergencyCallout.astro';
+import OfficialCard from '../../components/OfficialCard.astro';
+import ToVerify from '../../components/ToVerify.astro';
+import { getEntry } from 'astro:content';
+import site from '../../data/site.json';
+
+const chief = await getEntry('officials', 'brian-anderson');
+---
+
+<PageLayout
+  title="Police"
+  description="The Village of Midvale Police Department serves residents from Village Hall on Barnhill Road."
+  eyebrow="Services"
+  intro="One full-time officer plus auxiliary, supported by mutual aid from the Tuscarawas County Sheriff's Office."
+>
+  <EmergencyCallout />
+
+  <section class="grid gap-6 md:grid-cols-2 mb-10">
+    <div class="bg-white border border-stone rounded-card p-6">
+      <h2 class="font-serif text-h3 text-primary mt-0">Contact</h2>
+      <dl class="grid grid-cols-[max-content_1fr] gap-x-4 gap-y-2 text-body">
+        <dt class="text-slate">Address</dt>
+        <dd class="m-0">{site.address.street}<br />{site.address.city}, {site.address.state} {site.address.zip}</dd>
+        <dt class="text-slate">Mailing</dt>
+        <dd class="m-0">{site.mailing.po}<br />{site.mailing.city}, {site.mailing.state} {site.mailing.zip}</dd>
+        <dt class="text-slate">Non-emergency</dt>
+        <dd class="m-0"><a href={`tel:+1${site.phones.main.replace(/\D/g, '')}`}>{site.phones.main}</a></dd>
+        <dt class="text-slate">Fax</dt>
+        <dd class="m-0">{site.phones.policeFax}</dd>
+      </dl>
+    </div>
+    <div>
+      {chief && (
+        <OfficialCard
+          name={chief.data.name}
+          title={chief.data.title}
+          photo={chief.data.photo}
+          contactEmail={chief.data.contactEmail}
+          verified={chief.data.verified}
+          verifiedDate={chief.data.verifiedDate}
+          notes={chief.data.notes}
+        />
+      )}
+    </div>
+  </section>
+
+  <section class="prose-village max-w-prose">
+    <h2>Services</h2>
+    <p>
+      The Village of Midvale Police Department provides routine patrol, response
+      to non-emergency calls, traffic enforcement, and ordinance enforcement
+      within village limits. The department works closely with the Tuscarawas
+      County Sheriff's Office on mutual aid.
+    </p>
+
+    <h2>Auxiliary Police Officer program</h2>
+    <ToVerify note="Confirm the Auxiliary Police Officer position is still open before highlighting." />
+    <p>
+      The department periodically accepts applications for unpaid Auxiliary
+      Police Officer positions. Applicants must be certified by the Ohio Peace
+      Officer Training Commission. To inquire, contact the village at the
+      non-emergency number above.
+    </p>
+  </section>
+</PageLayout>

@@ -1,0 +1,27 @@
+---
+import BaseLayout from './BaseLayout.astro';
+
+export interface Props {
+  title: string;
+  description?: string;
+  eyebrow?: string;
+  intro?: string;
+}
+
+const { title, description, eyebrow, intro } = Astro.props;
+---
+
+<BaseLayout title={title} description={description}>
+  <header class="bg-primary text-cream">
+    <div class="container-content py-10 md:py-14">
+      {eyebrow && (
+        <p class="font-sans text-small uppercase tracking-wider text-cream/80 mb-2">{eyebrow}</p>
+      )}
+      <h1 class="font-serif text-h1 md:text-display text-cream m-0">{title}</h1>
+      {intro && <p class="mt-4 max-w-prose text-body text-cream/90">{intro}</p>}
+    </div>
+  </header>
+  <div class="container-content py-10 md:py-14">
+    <slot />
+  </div>
+</BaseLayout>

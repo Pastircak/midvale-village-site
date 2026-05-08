@@ -1,0 +1,79 @@
+---
+import nav from '../data/nav.json';
+import site from '../data/site.json';
+const year = new Date().getFullYear();
+---
+
+<footer class="bg-primary-dark text-cream mt-16 no-print">
+  <div class="container-content py-12">
+    <div class="grid gap-8 md:grid-cols-3">
+      <!-- Column 1: Village info -->
+      <div>
+        <h2 class="font-serif text-h3 text-cream mt-0 mb-3">{site.name}</h2>
+        <address class="not-italic text-body text-cream/90 space-y-1">
+          <div>{site.address.street}</div>
+          <div>{site.address.city}, {site.address.state} {site.address.zip}</div>
+          <div class="pt-2"><span class="text-cream/70 text-small">Mailing:</span> {site.mailing.po}, {site.mailing.city}, {site.mailing.state} {site.mailing.zip}</div>
+          <div class="pt-2"><span class="text-cream/70 text-small">Phone:</span> <a href={`tel:+1${site.phones.main.replace(/\D/g, '')}`} class="text-cream underline">{site.phones.main}</a></div>
+          <div><span class="text-cream/70 text-small">Emergencies:</span> <strong class="text-cream">911</strong></div>
+        </address>
+      </div>
+
+      <!-- Column 2: Quick links -->
+      <nav aria-label="Quick links">
+        <h2 class="font-serif text-h3 text-cream mt-0 mb-3">Quick Links</h2>
+        <ul class="space-y-2">
+          {nav.footer.quickLinks.map((item) => (
+            <li>
+              <a
+                href={item.href}
+                class="text-cream/90 hover:text-cream underline-offset-4"
+                {...(item.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+              >
+                {item.label}{item.external && <span aria-label="(external link)" class="ml-1">↗</span>}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+
+      <!-- Column 3: Stay informed -->
+      <div>
+        <h2 class="font-serif text-h3 text-cream mt-0 mb-3">Stay Informed</h2>
+        <p class="text-body text-cream/90 mb-3">
+          Email subscriptions are coming with Phase 2 of this site.
+          For now, follow village updates on Facebook or subscribe to the news RSS feed.
+        </p>
+        <div class="flex flex-wrap gap-3">
+          {site.social.facebook && (
+            <a href={site.social.facebook} target="_blank" rel="noopener noreferrer"
+               class="inline-flex items-center gap-2 px-3 py-2 rounded border border-cream/30 text-cream no-underline hover:bg-cream hover:text-primary-dark transition">
+              Facebook
+            </a>
+          )}
+          <a href="/news/rss.xml" class="inline-flex items-center gap-2 px-3 py-2 rounded border border-cream/30 text-cream no-underline hover:bg-cream hover:text-primary-dark transition">
+            RSS
+          </a>
+        </div>
+
+        <h2 class="font-serif text-h4 text-cream mt-6 mb-2">About</h2>
+        <ul class="space-y-1">
+          {nav.footer.village.map((item) => (
+            <li><a href={item.href} class="text-cream/90 hover:text-cream">{item.label}</a></li>
+          ))}
+        </ul>
+      </div>
+    </div>
+
+    <hr class="border-cream/20 my-8" />
+
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 text-small text-cream/80">
+      <p class="m-0">&copy; {year} {site.name}. {site.maintainer.blurb}</p>
+      <ul class="flex flex-wrap gap-x-4 gap-y-2">
+        {nav.footer.legal.map((item) => (
+          <li><a href={item.href} class="text-cream/90 hover:text-cream underline-offset-4">{item.label}</a></li>
+        ))}
+      </ul>
+    </div>
+  </div>
+</footer>

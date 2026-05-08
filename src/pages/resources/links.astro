@@ -1,0 +1,65 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+
+const groups: Array<{ heading: string; items: Array<{ label: string; url: string; note?: string }> }> = [
+  {
+    heading: 'Tuscarawas County',
+    items: [
+      { label: 'Tuscarawas County Government', url: 'https://www.co.tuscarawas.oh.us/' },
+      { label: 'Tuscarawas County Board of Elections', url: 'https://boe.ohio.gov/tuscarawas/' },
+      { label: 'Tuscarawas County Sheriff', url: 'https://www.tusc-sheriff.org/' },
+      { label: 'Tuscarawas County CVB', url: 'https://traveltusc.com/' },
+    ],
+  },
+  {
+    heading: 'State of Ohio',
+    items: [
+      { label: 'Ohio Auditor of State', url: 'https://ohioauditor.gov/' },
+      { label: 'Ohio Revised Code', url: 'https://codes.ohio.gov/ohio-revised-code' },
+      { label: 'Ohio EPA — Drinking Water Reports', url: 'https://epa.ohio.gov/divisions-and-offices/drinking-and-ground-waters' },
+      { label: 'Public Utilities Commission of Ohio', url: 'https://www.puco.ohio.gov/' },
+    ],
+  },
+  {
+    heading: 'Taxes & Utilities',
+    items: [
+      { label: 'RITA — Income Tax', url: 'https://www.ritaohio.com/' },
+      { label: 'Aqua Ohio — Water Service', url: 'https://www.aquawater.com/about-us/our-states/ohio' },
+    ],
+  },
+  {
+    heading: 'Schools & Community',
+    items: [
+      { label: 'Indian Valley Local Schools', url: 'https://www.ivschools.org/' },
+      { label: 'Midvale Ohio History (community-run)', url: 'https://midvaleohiohistory.com' },
+    ],
+  },
+];
+---
+
+<PageLayout
+  title="Useful Links"
+  description="Tuscarawas County, State of Ohio, and other external resources for residents of the Village of Midvale."
+  eyebrow="Resources"
+  intro="External resources residents may need to interact with the county, state, and service providers."
+>
+  <div class="grid gap-8 md:grid-cols-2">
+    {groups.map((g) => (
+      <section>
+        <h2 class="font-serif text-h2 text-ink mt-0 mb-3">{g.heading}</h2>
+        <ul class="space-y-2">
+          {g.items.map((it) => (
+            <li>
+              <a href={it.url} target="_blank" rel="noopener noreferrer" class="text-primary font-semibold">{it.label} &rarr;</a>
+              {it.note && <span class="block text-small text-slate">{it.note}</span>}
+            </li>
+          ))}
+        </ul>
+      </section>
+    ))}
+  </div>
+
+  <p class="text-small text-slate mt-10">
+    Suggest a link by using the <a href="/contact/">contact form</a>.
+  </p>
+</PageLayout>

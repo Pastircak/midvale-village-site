@@ -1,0 +1,40 @@
+---
+import ProseLayout from '../../layouts/ProseLayout.astro';
+import ToVerify from '../../components/ToVerify.astro';
+import site from '../../data/site.json';
+---
+
+<ProseLayout
+  title="Community"
+  description="Schools, churches, and community institutions in Midvale."
+  eyebrow="About"
+  intro="The institutions and organizations that make Midvale feel like home."
+>
+  <h2>Schools</h2>
+  <p>
+    Children in Midvale attend schools in the
+    <a href={site.schoolDistrict.url}>{site.schoolDistrict.name}</a>:
+  </p>
+  <ul>
+    <li><strong>Midvale Elementary</strong> (K&ndash;5) &mdash; located within the village, ~400 students</li>
+    <li><strong>Indian Valley Middle School</strong> &mdash; in the village of Tuscarawas</li>
+    <li><strong>Indian Valley High School</strong> &mdash; in Gnadenhutten</li>
+  </ul>
+
+  <h2>Churches & places of worship</h2>
+  <ToVerify note="A directory of village churches will be added once we've confirmed each congregation's preferred listing." />
+
+  <h2>Community institutions</h2>
+  <ul>
+    <li><strong>Midvale Speedway</strong> &mdash; a racing institution on the eastern edge of the village</li>
+    <li><strong>Volunteer Fire Department</strong> &mdash; the Midvale-Barnhill-Brightwood Volunteer Fire Department</li>
+    <li><strong>American Legion / VFW</strong> &mdash; <em>verify with village</em></li>
+  </ul>
+
+  <h2>Get involved</h2>
+  <p>
+    The village welcomes residents at council meetings (see the
+    <a href="/meetings/schedule/">meetings schedule</a>) and through volunteer
+    opportunities like the Auxiliary Police Officer program.
+  </p>
+</ProseLayout>

@@ -1,0 +1,31 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import NewsCard from '../../components/NewsCard.astro';
+import { getCollection } from 'astro:content';
+
+const all = (await getCollection('news', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+---
+
+<PageLayout
+  title="News & Announcements"
+  description="The latest news from the Village of Midvale."
+  eyebrow="News"
+  intro="Announcements and updates from the Village."
+>
+  <div class="flex items-baseline justify-between mb-6 flex-wrap gap-2">
+    <p class="text-slate m-0">{all.length} {all.length === 1 ? 'post' : 'posts'}</p>
+    <a href="/news/rss.xml" class="text-primary font-semibold">RSS feed &rarr;</a>
+  </div>
+
+  <div class="grid gap-4 md:grid-cols-2">
+    {all.map((post) => (
+      <NewsCard
+        title={post.data.title}
+        date={post.data.date}
+        excerpt={post.data.excerpt}
+        href={`/news/${post.slug}/`}
+      />
+    ))}
+  </div>
+</PageLayout>

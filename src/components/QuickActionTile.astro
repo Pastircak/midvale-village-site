@@ -1,0 +1,40 @@
+---
+// Quick action tile (spec 5.5). Whole tile is clickable.
+export interface Props {
+  title: string;
+  description?: string;
+  href: string;
+  icon?: string; // SVG path data — optional
+  external?: boolean;
+  meta?: string; // e.g. "Emergencies: 911"
+}
+
+const { title, description, href, icon, external = false, meta } = Astro.props;
+---
+
+<a
+  href={href}
+  {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+  class="group block bg-white border border-stone rounded-card p-5 no-underline transition hover:-translate-y-0.5 hover:shadow-lift hover:border-primary focus-visible:border-primary"
+>
+  <div class="flex items-start gap-4">
+    {icon && (
+      <span class="inline-flex items-center justify-center w-10 h-10 rounded bg-cream text-primary flex-shrink-0" aria-hidden="true">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d={icon} />
+        </svg>
+      </span>
+    )}
+    <div class="flex-1 min-w-0">
+      <h3 class="font-sans font-semibold text-h4 text-ink m-0 group-hover:text-primary">
+        {title}{external && <span aria-label="(external link)" class="ml-1 text-slate">↗</span>}
+      </h3>
+      {description && (
+        <p class="mt-1 text-small text-slate m-0">{description}</p>
+      )}
+      {meta && (
+        <p class="mt-2 text-small font-semibold text-accent m-0">{meta}</p>
+      )}
+    </div>
+  </div>
+</a>

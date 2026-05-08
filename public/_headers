@@ -1,0 +1,21 @@
+# Cloudflare Pages static-asset header rules
+# (Pages Function _middleware.ts also adds the same headers; this file ensures
+# static asset responses get them too without a function on the path.)
+
+/*
+  Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: geolocation=(), camera=(), microphone=()
+
+# Long cache for fonts (immutable, hashed by file content)
+/fonts/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Long cache for site brand assets
+/brand/*
+  Cache-Control: public, max-age=86400
+
+/photos/*
+  Cache-Control: public, max-age=86400

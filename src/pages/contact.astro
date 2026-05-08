@@ -1,0 +1,59 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+import ContactForm from '../components/ContactForm.astro';
+import Map from '../components/Map.astro';
+import site from '../data/site.json';
+---
+
+<PageLayout
+  title="Contact"
+  description="How to contact the Village of Midvale, including phone numbers, mailing address, and a contact form."
+  eyebrow="Contact"
+  intro="How to reach the Village. For emergencies, always call 911."
+>
+  <div class="grid gap-10 lg:grid-cols-5">
+    <!-- Address & contacts -->
+    <aside class="lg:col-span-2 space-y-6">
+      <div class="bg-white border border-stone rounded-card p-6">
+        <h2 class="font-serif text-h3 text-primary mt-0">Village Hall</h2>
+        <address class="not-italic text-body">
+          {site.address.street}<br />
+          {site.address.city}, {site.address.state} {site.address.zip}
+        </address>
+        <p class="text-small text-slate mt-2 m-0">
+          <strong>Mailing:</strong> {site.mailing.po}, {site.mailing.city}, {site.mailing.state} {site.mailing.zip}
+        </p>
+      </div>
+
+      <div class="bg-white border border-stone rounded-card p-6">
+        <h2 class="font-serif text-h3 text-primary mt-0">Phones</h2>
+        <dl class="grid grid-cols-[max-content_1fr] gap-x-4 gap-y-2 text-body">
+          <dt class="text-slate">Emergencies</dt>
+          <dd class="m-0 font-semibold text-accent">911</dd>
+          <dt class="text-slate">Police (non-emergency)</dt>
+          <dd class="m-0"><a href={`tel:+1${site.phones.main.replace(/\D/g, '')}`}>{site.phones.main}</a></dd>
+          <dt class="text-slate">Police fax</dt>
+          <dd class="m-0">{site.phones.policeFax}</dd>
+        </dl>
+        <p class="text-small text-slate italic mt-3 m-0">{site.hours.general}</p>
+      </div>
+
+      <Map />
+    </aside>
+
+    <!-- Form -->
+    <div class="lg:col-span-3">
+      <h2 class="font-serif text-h2 text-ink mt-0">Send a message</h2>
+
+      <div class="bg-warning/10 border-l-4 border-warning rounded p-4 mb-6">
+        <p class="m-0 text-body text-ink">
+          <strong>This form is for general inquiries.</strong> For emergencies, call <strong>911</strong>.
+          For police non-emergencies, call <a href={`tel:+1${site.phones.main.replace(/\D/g, '')}`} class="font-semibold">{site.phones.main}</a>.
+          Public records requests under Ohio R.C. § 149.43 should be directed to the Fiscal Officer.
+        </p>
+      </div>
+
+      <ContactForm />
+    </div>
+  </div>
+</PageLayout>

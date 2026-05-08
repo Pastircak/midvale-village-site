@@ -1,0 +1,47 @@
+---
+import ProseLayout from '../layouts/ProseLayout.astro';
+---
+
+<ProseLayout
+  title="Accessibility"
+  description="Accessibility statement for the Village of Midvale website."
+  eyebrow="Accessibility"
+  intro="Our commitment to making this site usable by everyone."
+>
+  <h2>Conformance</h2>
+  <p>
+    The Village of Midvale website is designed to conform to
+    <strong>Web Content Accessibility Guidelines (WCAG) 2.1 Level AA</strong>,
+    with Level AAA where reasonable &mdash; particularly color contrast.
+  </p>
+  <p>
+    The site is also intended to satisfy the requirements of
+    Section 508 of the Rehabilitation Act and to meet the de facto expectations
+    of the Americans with Disabilities Act for state and local government
+    digital services.
+  </p>
+
+  <h2>What we've done</h2>
+  <ul>
+    <li>Visible focus indicators on every interactive element.</li>
+    <li>A "Skip to main content" link as the first focusable element on every page.</li>
+    <li>Heading levels in correct order, with one <code>&lt;h1&gt;</code> per page.</li>
+    <li>Form inputs always have visible labels and clear error messages.</li>
+    <li>All non-decorative images include meaningful <code>alt</code> text.</li>
+    <li>Color is never the only means of conveying information.</li>
+    <li>Keyboard-only navigation works on every page.</li>
+    <li>Semantic HTML throughout; ARIA used sparingly and only where semantic HTML can't.</li>
+  </ul>
+
+  <h2>Found a problem?</h2>
+  <p>
+    If you encounter an accessibility barrier on this site, please let us know
+    so we can fix it. The fastest way is the <a href="/contact/">contact form</a>;
+    you can also call the village office at the number on the contact page.
+  </p>
+  <p>
+    If you need a public document in an alternate format (large print, plain text,
+    audio), include the request in your message and we will respond with the
+    document or with an estimated timeline.
+  </p>
+</ProseLayout>
