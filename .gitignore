@@ -41,3 +41,7 @@ tailwind.config.mjs
 Historical Photo.jpg
 *-preview.jpg
 *-preview.png
+
+.dev.vars*
+!.dev.vars.example
+!.env.example
