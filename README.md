@@ -16,7 +16,7 @@ Tuscarawas County, Ohio. Built with Astro + Tailwind, deployed on Cloudflare Pag
 rm src/content/config.ts tailwind.config.mjs
 
 # One-time install
-nvm use            # uses Node 20+
+nvm use            # uses Node 22 (Astro 6 requires >= 22.12.0)
 npm install
 
 # Day-to-day

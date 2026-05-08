@@ -5,6 +5,9 @@
   "type": "module",
   "description": "Demonstration website for the Village of Midvale, Tuscarawas County, Ohio.",
   "license": "MIT",
+  "engines": {
+    "node": ">=22.12.0"
+  },
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
